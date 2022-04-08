@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flash_chat/screens/chat_screen.dart';
 import 'package:flash_chat/screens/registration_screen.dart';
 import 'package:flash_chat/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
 
   AnimationController controller;
   Animation animation;
+  final _auth= FirebaseAuth.instance;
 
   @override
   void dispose(){
@@ -25,6 +28,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
   void initState() {
     // TODO: implement initState
     super.initState();
+
+
+
     controller=AnimationController(
       duration: Duration(
         seconds: 1,
@@ -37,6 +43,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
       setState(() {
       });
     });
+
+    checkCurrentUser();
+
   }
 
   @override
@@ -90,6 +99,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
         ),
       ),
     );
+  }
+
+  void checkCurrentUser()   {
+       _auth.currentUser().then((value) {
+         print(value);
+        if(value!=null){
+
+          Navigator.pushNamed(context, ChatScreen.id);
+        }
+      });
+
   }
 }
 
